@@ -1,4 +1,30 @@
-# local-wake
+# local-wake-Gray
+
+WIP - outlining incoming features, not pushed yet! 
+
+**Fork starts here**
+
+Autophrase has three settings - User/TTS/Hybrid. Default to hybrid. 
+
+lwake -autophrase "familair" 
+
+1) The user is prompted to say the phrase 3 times. 
+2) STT > phrase is displayed on console 
+3) TTS generates 3 variations of the phrase
+4) Tested by first silence, then by comparing all the phrases
+5) any phrases with errors - false positives, or never triggering are discarded-
+6) if 3 valid phrases are left, returns "autophrase complete"
+
+Fixes
+• Invalid input shape: {2,1} error stems from the recording having less than 1 second of audio. Claude/Cursor patched with the following to features.py :
+
+# Ensure audio is at least 1 second (16000 samples) - model requirement
+    min_length = sample_rate  # 1 second
+    if len(y) < min_length:
+        y = np.pad(y, (0, min_length - len(y)), mode='constant')
+    
+
+**Fork ends here**
 
 Lightweight wake word detection that runs locally and is suitable for resource-constrained devices like the Raspberry Pi. It requires no model training to support custom wake words and can be fully configured by end users on their devices. The system is based on feature extraction combined with time-warping comparison against a user-defined reference set.
 
